@@ -1,0 +1,115 @@
+﻿@using WeatherProject.Models.Pager
+@model IEnumerable<WeatherProject.Models.WeatherData.WeatherTypes>
+
+@{
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+
+
+
+<div class="mt-2" style="width:50%">
+    <div class="row">
+        <h2>Таблица погодных явлений</h2>
+
+        <form method="get" asp-action="DisplayDb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-auto">
+                        <input type="search" placeholder="Поиск по Дате" name="Search" class="form-control" />
+                    </div>
+                    <div class="col-auto">
+                        <input type="submit" value="Поиск" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Температура</th>
+                    <th>Относительная влажность</th>
+                    <th>Точка росы</th>
+                    <th>Атмосферное давление</th>
+                    <th>Направление ветра</th>
+                    <th>Скорость ветра</th>
+                    <th>Облачность</th>
+                    <th>Нижняя граница облачности</th>
+                    <th>Горизонтальная видимость</th>
+                    <th>Погодные явления</th>
+                </tr>
+
+                @foreach (var whearings in Model)
+                {
+                    <tr>
+                        <td>@whearings.Data </td>
+                        <td>@whearings.Time</td>
+                        <td>@whearings.Temperature </td>
+                        <td>@whearings.Relativehumidity</td>
+                        <td>@whearings.Dewpoint </td>
+                        <td>@whearings.Atmosphericpressure </td>
+                        <td>@whearings.Directionofthewind</td>
+                        <td>@whearings.Windspeed </td>
+                        <td>@whearings.Cloudiness</td>
+                        <td>@whearings.H </td>
+                        <td>@whearings.Vv</td>
+                        <td>@whearings.Weatherconditions</td>
+                    </tr>
+                }
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+
+<!--Логика пагинации-->
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-end">
+
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Home" asp-action="DisplayDb" asp-route-pg="1"> Первая страница </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Home" asp-action="DisplayDb" asp-route-pg="@(pager.CurrentPage -1)"> Предыдущая страница </a>
+                </li>
+            }
+
+
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active":"")">
+                    <a class="page-link" asp-asp-controller="Home" asp-action="DisplayDb" asp-route-pg="@pge"> @pge </a>
+                </li>
+            }
+
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Home" asp-action="DisplayDb" asp-route-pg="@(pager.CurrentPage+1)"> Следующая страница </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-asp-controller="Home" asp-action="DisplayDb" asp-route-pg="@(pager.TotalPages)"> Последняя страница </a>
+                </li>
+            }
+        </ul>
+    }
+
+
+</div>
+

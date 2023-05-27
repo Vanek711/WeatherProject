@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container">
+    <div class="col-sm-12">
+
+        <div class="card">
+            <div class="card-header">Выберите Excel Файл</div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="mb-3">
+                        <input class="form-control" type="file"  id="inputExcel" multiple>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary form-control" onclick="MultiUploadToDb()">Загрузка в базу данных</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+    <div class=" mt-4">
+    <a type="button" class="btn btn-outline-primary btn-lg" href="/Home/DisplayDb" OnClick="DisplayDb">Перейти к базе данных</a>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script>
+        function MultiUploadToDb() {
+            const input = document.getElementById("inputExcel");
+
+            if (input.files.length === 0) {
+                alert("Please select at least one Excel file.");
+                return;
+            }
+
+            const validExtensions = ["xlsx", "xls"];
+
+            const formData = new FormData();
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                const fileExtension = getFileExtension(file.name);
+                console.log(fileExtension)
+                if (validExtensions.includes(fileExtension.toLowerCase())) 
+                {
+                    formData.append("ExcelFile", file);
+                } 
+                else 
+                {
+                    alert(`Пожалуйста, проверьте данный файл: ${file.name}`);
+                }
+            }
+
+            if (formData.get("ExcelFile").length === 0) {
+                alert("No valid Excel files selected.");
+                return;
+            }
+
+            fetch("MultiUploadToDb", {
+                method: "POST",
+                body: formData
+            })
+                .then((response) => response.json())
+                .then((dataJson) => {
+                    alert(dataJson.message);
+                });
+        }
+
+        function getFileExtension(filename) {
+            return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+        }
+    </script>
+}
