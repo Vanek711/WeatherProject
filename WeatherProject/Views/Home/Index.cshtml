@@ -3,16 +3,16 @@
 }
 
 
-<div class="container">
+<div class="container mt-4">
     <div class="col-sm-12">
 
         <div class="card">
-            <div class="card-header">Выберите Excel Файл</div>
+            <div class="card-header" style="font-size: 20px;">Выберите Excel Файл</div>
             <div class="card-body">
 
                 <div class="row">
                     <div class="mb-3">
-                        <input class="form-control" type="file"  id="inputExcel" multiple>
+                        <input class="form-control" type="file" id="inputExcel"  multiple>
                     </div>
                     <div class="col-12">
                         <button class="btn btn-primary form-control" onclick="MultiUploadToDb()">Загрузка в базу данных</button>
@@ -22,15 +22,20 @@
 
             </div>
         </div>
-        <div class="col-sm-4">
-        </div>
     </div>
-    <div class=" mt-4">
-    <a type="button" class="btn btn-outline-primary btn-lg" href="/Home/DisplayDb" OnClick="DisplayDb">Перейти к базе данных</a>
-    </div>
-
 </div>
 
+<div class="row mt-4">
+    <div class="col">
+        <a type="button" style="margin-left: 10px;" class="btn btn-outline-primary btn-lg" href="/Home/DisplayDb" OnClick="DisplayDb">Перейти к базе данных</a>
+    </div>
+    <div class="col">
+        @using (Html.BeginForm("ClearDatabase", "Home", FormMethod.Post))
+        {
+            <input type="submit" style="margin-left: 60%;" class="btn btn-primary btn-lg" value="Очистить базу данных" />
+        }
+    </div>
+</div>
 
 @section Scripts{
     <script>
@@ -49,12 +54,10 @@
                 const file = input.files[i];
                 const fileExtension = getFileExtension(file.name);
                 console.log(fileExtension)
-                if (validExtensions.includes(fileExtension.toLowerCase())) 
-                {
+                if (validExtensions.includes(fileExtension.toLowerCase())) {
                     formData.append("ExcelFile", file);
-                } 
-                else 
-                {
+                }
+                else {
                     alert(`Пожалуйста, проверьте данный файл: ${file.name}`);
                 }
             }

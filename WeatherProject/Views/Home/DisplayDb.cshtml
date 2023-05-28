@@ -12,26 +12,59 @@
         pageNo = pager.CurrentPage;
     }
 }
+<style>
 
+    h2,h3,th {
+        color: darkcyan;
+    }
+    h1 {
+        color: blue;
+    }
+</style>
 
 
 
 <div class="mt-2" style="width:50%">
     <div class="row">
-        <h2>Таблица погодных явлений</h2>
+        <div class="col-12">
+            <h1 class ="text-center">Таблица погодных явлений</h1>
+        </div>
 
+        <h3>Выберите  месяц и год:</h3>
         <form method="get" asp-action="DisplayDb">
-            <div class="container">
-                <div class="row">
-                    <div class="col-auto">
-                        <input type="search" placeholder="Поиск по Дате" name="Search" class="form-control" />
-                    </div>
-                    <div class="col-auto">
-                        <input type="submit" value="Поиск" class="btn btn-primary" />
-                    </div>
+            <div class="row">
+                <div class="col-auto">
+                    <select name="SearchMonth" class="form-control">
+                        <option value="">Выберите месяц</option>
+                        <option value=".01.">Январь</option>
+                        <option value=".02.">Февраль</option>
+                        <option value=".03.">Март</option>
+                        <option value=".04.">Апрель</option>
+                        <option value=".05.">Май</option>
+                        <option value=".06.">Июнь</option>
+                        <option value=".07.">Июль</option>
+                        <option value=".08.">Август</option>
+                        <option value=".09.">Сентябрь</option>
+                        <option value=".10.">Октябрь</option>
+                        <option value=".11.">Ноябрь</option>
+                        <option value=".12.">Декабрь</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select name="SearchYear" class="form-control">
+                        <option value="">Выберите год</option>
+                        <option value="2010">2010</option>
+                        <option value="2011">2011</option>
+                        <option value="2012">2012</option>
+                        <option value="2013">2013</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit">Поиск</button>
                 </div>
             </div>
         </form>
+
 
         <table class="table table-striped">
             <thead>
@@ -70,6 +103,19 @@
             </thead>
         </table>
     </div>
+    <h3>Поиск по всем элементам</h3>
+    <form method="get" asp-action="DisplayDb">
+        <div class="container">
+            <div class="row">
+                <div class="col-auto">
+                    <input type="search" placeholder="Поиск по элементам" name="Search" class="form-control" />
+                </div>
+                <div class="col-auto">
+                    <input type="submit" value="Поиск" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
 
 </div>
 
