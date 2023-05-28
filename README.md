@@ -16,6 +16,6 @@ b.	Годам
 ## Комментарии от автора:
 1.	Не советую использовать Yandex браузер.
 2.	На компьютерах с 8 ГБ оперативной памяти может возникать ошибка записи в Базу данных.
-3.	В качестве СУБД Microsoft SQL Server 2022 (RTM) - 16.0.1000.6 (X64)   
+3.	В качестве СУБД использована Microsoft SQL Server 2022 (RTM) - 16.0.1000.6 (X64)   
 4.	Были использованы библиотеки: NPOI, Microsoft.EntityFrameworkCore,Microsoft.EntityFrameworkCore.Tools, EFCore.BulkExtensions
 
