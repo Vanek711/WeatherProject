@@ -43,7 +43,7 @@
             const input = document.getElementById("inputExcel");
 
             if (input.files.length === 0) {
-                alert("Please select at least one Excel file.");
+                alert("Проверьте выбрали ли вы файл");
                 return;
             }
 
@@ -63,7 +63,7 @@
             }
 
             if (formData.get("ExcelFile").length === 0) {
-                alert("No valid Excel files selected.");
+                alert("Проверьте выбрали ли вы файл Excel");
                 return;
             }
 

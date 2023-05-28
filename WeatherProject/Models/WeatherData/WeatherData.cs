@@ -6,27 +6,27 @@ namespace WeatherProject.Models.WeatherData
     {
         [Key]
         public int Id { get; set; }
-        public string Data { get; set; }
-        public string Cloudiness { get; set; } = null!;
+        public string? Data { get; set; } = null;
+        public string? Cloudiness { get; set; } = null;
 
-        public string Time { get; set; }
+        public string? Time { get; set; } = null;
 
-        public string Relativehumidity { get; set; }
+        public string? Relativehumidity { get; set; } = null;
 
-        public string Atmosphericpressure { get; set; }
+        public string? Atmosphericpressure { get; set; } = null;
 
-        public string Directionofthewind { get; set; } = null!;
+        public string? Directionofthewind { get; set; } = null;
 
-        public string? Temperature { get; set; }
+        public string? Temperature { get; set; } = null;
 
-        public string? H { get; set; }
+        public string? H { get; set; } = null;
 
-        public string? Vv { get; set; }
+        public string? Vv { get; set; } = null;
 
-        public string? Dewpoint { get; set; }
+        public string? Dewpoint { get; set; } = null;
 
-        public string? Windspeed { get; set; }
+        public string? Windspeed { get; set; } = null;
 
-        public string? Weatherconditions { get; set; }
+        public string? Weatherconditions { get; set; } = null;
     }
 }

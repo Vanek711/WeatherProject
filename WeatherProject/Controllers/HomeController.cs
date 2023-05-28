@@ -63,11 +63,11 @@ namespace WeatherProject.Controllers
                 {
                     if(UploadToDb(file))
                     {
-                        filExamination += "Загружено:"+file.FileName;
+                        filExamination += "Загружено:"+file.FileName +" ";
                     }
                     else
                     {
-                        filExamination += "Обновлено:" + file.FileName;
+                        filExamination += "Обновлено:" + file.FileName + " ";
                     }
                 }
                 return StatusCode(StatusCodes.Status200OK, new { message = $"{filExamination}" });
@@ -95,9 +95,10 @@ namespace WeatherProject.Controllers
             {
                 MiExcel = new HSSFWorkbook(stream);
             }
-            
 
-            for (int j = 0; j < 12; j++)
+            var counter = MiExcel.NumberOfSheets;
+
+            for (int j = 0; j < counter; j++)
             {
                 ISheet NewSheet = MiExcel.GetSheetAt(j);
 
@@ -113,19 +114,20 @@ namespace WeatherProject.Controllers
                     list.Add(new WeatherTypes
                     {
                         Id = i + countRows,
-                        Data = file.GetCell(0, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Time = file.GetCell(1, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Temperature = file.GetCell(2, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Relativehumidity = file.GetCell(3, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Dewpoint = file.GetCell(4, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Atmosphericpressure = file.GetCell(5, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Directionofthewind = file.GetCell(6, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Windspeed = file.GetCell(7, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Cloudiness = file.GetCell(8, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        H = file.GetCell(9, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Vv = file.GetCell(10, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
-                        Weatherconditions = file.GetCell(11, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString(),
+                        Data = CellToString(file, 0),
+                        Time = CellToString(file, 1),
+                        Temperature = CellToString(file, 2),
+                        Relativehumidity = CellToString(file, 3),
+                        Dewpoint = CellToString(file, 4),
+                        Atmosphericpressure = CellToString(file, 5),
+                        Directionofthewind = CellToString(file, 6),
+                        Windspeed = CellToString(file, 7),
+                        Cloudiness = CellToString(file, 8),
+                        H = CellToString(file, 9),
+                        Vv = CellToString(file, 10),
+                        Weatherconditions = CellToString(file, 11)
                     });
+
                 }
                 if (_dbocontext.Weather.Any(o => o.Data == list[0].Data)) return false;
                 if (_dbocontext.Database.CanConnect())
@@ -137,7 +139,20 @@ namespace WeatherProject.Controllers
             }
             return true;
         }
+        private static string CellToString(IRow file, int columnIndex)
+        {   
+            if (file != null)
+            {
+                var cell = file.GetCell(columnIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                if (cell != null)
+                {
+                    return file.GetCell(columnIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK).ToString();
 
+                }
+                return "";
+            }
+            return "";
+        }
         //Логика пагинации + логика поиска 
         //Если в поиске пусто - отображать все, иначе отображать все, что начинается с Search
         public IActionResult DisplayDb(int pg = 1, int pageSize = 10, string Search = "", string SearchMonth= "", string SearchYear ="")
@@ -161,7 +176,19 @@ namespace WeatherProject.Controllers
             }
             else
             {
-                weatherings = _dbocontext.Weather.Where(p => p.Data.Contains(Search)).ToList();
+                weatherings = _dbocontext.Weather.Where(p => p.Data.Contains(Search)||
+                                                        p.Time.Contains(Search) ||
+                                                        p.Temperature.Contains(Search) ||
+                                                        p.Vv.Contains(Search) ||
+                                                        p.H.Contains(Search) ||
+                                                        p.Weatherconditions.Contains(Search) ||
+                                                        p.Directionofthewind.Contains(Search) ||
+                                                        p.Dewpoint.Contains(Search) ||
+                                                        p.Cloudiness.Contains(Search) ||
+                                                        p.Windspeed.Contains(Search) ||
+                                                        p.Atmosphericpressure.Contains(Search) ||
+                                                        p.Relativehumidity.Contains(Search)) 
+                                                        .ToList();
             }
             int resCount = weatherings.Count();
             if (resCount == 0) return View(data);
